@@ -7,12 +7,16 @@ export default class NavBar extends Component {
         this.state = {keyword: ''};
     }
     handleChange = (e) => {
-        this.setState({keyword: e.target.value});
+        this.setState({keyword: e.target.value})
     }
     render() {
         let refresh = this.props.refresh;
         let changeCategory = this.props.changeCategory;
-        let search = this.props.search;
+        let search = () => {
+            let temp = this.state.keyword;
+            this.setState({keyword: ''});
+            return this.props.search(temp);
+        }
         return (
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
@@ -44,8 +48,8 @@ export default class NavBar extends Component {
                         </li>
                     </ul>
                     <form className="d-flex" role="search">
+                        <input className="form-control me-2" type="search" placeholder="Celeb, Cricket..." aria-label="Search" value={this.state.keyword} onChange={this.handleChange}/>
                         <Link to={`/${this.state.keyword}`}>
-                            <input className="form-control me-2" type="search" placeholder="Celeb, Cricket..." aria-label="Search" value={this.state.keyword} onChange={this.handleChange}/>
                             <button className="btn btn-outline-warning" type="submit" onClick={search}>Search</button>
                         </Link>
                     </form>
