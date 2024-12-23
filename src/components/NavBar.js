@@ -44,7 +44,7 @@ export default class NavBar extends Component {
                         </ul>
                         </li>
                         <li className="nav-item">
-                        <a className="nav-link active" aria-current="page" href='/'>About</a>
+                        <Link className="nav-link active" aria-current="page" to='/About'>About</Link>
                         </li>
                     </ul>
                     <form className="d-flex" role="search">
