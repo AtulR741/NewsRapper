@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.card-img-top {
+  height: 23vh;
+}
+.loading {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50vh;
+  left: 50vw;
+  z-index: 10;
+}

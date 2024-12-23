@@ -1,25 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {Component} from 'react'
+import NavBar from './components/NavBar.js'
+import News from './components/News.js'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  constructor() {
+    super();
+    this.defaultUrl = 'https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=72d9b9487e0841369cd70d6d7486bb97';
+    this.state = {finalUrl: this.defaultUrl, header: 'Recents', path: '/'};
+  }
+  refresh = () => {
+    this.setState({finalUrl: this.defaultUrl,
+                  header: 'Recents',
+                  path: '/'
+    });
+  }
+  changeCategory = (category) => {
+    this.setState({finalUrl : `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=72d9b9487e0841369cd70d6d7486bb97`,
+                  header : `${category.toUpperCase()}`,
+                  path: `/${category.toUpperCase()}`});
+  }
+  search = (topic) => {
+    this.setState({finalUrl : `https://newsapi.org/v2/everything?q=${topic}&apiKey=72d9b9487e0841369cd70d6d7486bb97`,
+                  header : `Everything about '${topic}'`,
+                path: `/${topic}`});
+  }
+  render() {
+    return (
+      <Router>
+        <NavBar refresh = {this.refresh} changeCategory = {this.changeCategory} search = {this.search} />
+        <Routes>
+          <Route path = {this.state.path} element = {<News state = {this.state} />}></Route>
+        </Routes>
+      </Router>
+    );
+  }
 }
-
-export default App;
