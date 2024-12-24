@@ -29,7 +29,7 @@ export default class App extends Component {
   }
   render() {
     return (
-      <Router basename="/NewsRapper">
+      <Router>
         <NavBar refresh = {this.refresh} changeCategory = {this.changeCategory} search = {this.search} />
         <Routes>
           <Route path = {this.state.path} element = {<News state = {this.state} />}></Route>
