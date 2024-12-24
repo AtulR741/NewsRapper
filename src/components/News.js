@@ -15,26 +15,25 @@ export default class News extends Component {
         };
     }
 
-    async componentDidMount() {
-        let url = `${this.props.state.finalUrl}&page=1&pageSize=${this.state.pageSize}`;
+    request = async (url) => {
+        this.setState({loading : true});
         let data = await fetch(url);
         let parseData = await data.json();
+        return parseData;
+    }
+
+    async componentDidMount() {
+        let parseData = await this.request(`${this.props.state.finalUrl}&page=1&pageSize=${this.state.pageSize}`);
         this.setState({articles : parseData.articles, page : 1, totalArticles : parseData.totalResults, loading : false});
     }
 
     handleNext = async () => {
-        let url = `${this.props.state.finalUrl}&page=${this.state.page + 1}&pageSize=${this.state.pageSize}`;
-        this.setState({loading : true});
-        let data = await fetch(url);
-        let parseData = await data.json();
+        let parseData = await this.request(`${this.props.state.finalUrl}&page=${this.state.page + 1}&pageSize=${this.state.pageSize}`);
         this.setState({articles : parseData.articles, page : this.state.page + 1, totalArticles : parseData.totalResults, loading : false});
     }
 
     handlePrev = async () => {
-        let url = `${this.props.state.finalUrl}&page=${this.state.page - 1}&pageSize=${this.state.pageSize}`;
-        this.setState({loading : true});
-        let data = await fetch(url);
-        let parseData = await data.json();
+        let parseData = await this.request(`${this.props.state.finalUrl}&page=${this.state.page - 1}&pageSize=${this.state.pageSize}`);
         this.setState({articles : parseData.articles, page : this.state.page - 1, totalArticles : parseData.totalResults, loading : false});
     }
 
