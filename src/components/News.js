@@ -14,7 +14,7 @@ export default class News extends Component {
     }
 
     fetchArticles = async () => {
-        console.log(this.state.page);
+        this.props.setProgress(0);
         const url = `${this.props.state.finalUrl}&page=${this.state.page}`;
         const data = await fetch(url);
         const parseData = await data.json();
@@ -22,6 +22,7 @@ export default class News extends Component {
             articles: prevState.articles.concat(parseData.articles),
             totalArticles: parseData.totalResults
         }));
+        this.props.setProgress(100);
     };
     
     request = () => {
