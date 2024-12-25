@@ -9,21 +9,34 @@ export default class News extends Component {
         this.state = {
             articles: [],
             page: 0,
-            pageSize: 8,
             totalArticles: 0,
         };
     }
 
-    request = async () => {
-        this.setState({page: this.state.page + 1});
-        let url = `${this.props.state.finalUrl}&page=${this.state.page}&pageSize=${this.state.pageSize}`;
-        let data = await fetch(url);
-        let parseData = await data.json();
-        this.setState({articles: this.state.articles.concat(parseData.articles), totalArticles: parseData.totalResults});
+    fetchArticles = async () => {
+        console.log(this.state.page);
+        const url = `${this.props.state.finalUrl}&page=${this.state.page}`;
+        const data = await fetch(url);
+        const parseData = await data.json();
+        this.setState((prevState) => ({
+            articles: prevState.articles.concat(parseData.articles),
+            totalArticles: parseData.totalResults
+        }));
+    };
+    
+    request = () => {
+        let temp = this.state.page;
+        this.setState({page: temp + 1});
     }
-
+    
     componentDidMount() {
         this.request();
+    }
+
+    async componentDidUpdate(prevProps, prevState) {
+        if (prevState.page !== this.state.page) {
+            await this.fetchArticles();
+        }
     }
 
     render() {
@@ -35,7 +48,7 @@ export default class News extends Component {
                 loader={<Spinner />}
                 endMessage={
                     <p style={{ textAlign: 'center' }}>
-                    <b>No more results :P</b>
+                        <b>No more results :P</b>
                     </p>
                 }>
                 <div className="container">
@@ -44,8 +57,8 @@ export default class News extends Component {
                         <div className='row my-3'>
                             {this.state.articles.map((element, index) => {
                                 return (
-                                    <div key = {index} className="col">
-                                        <NewsItem title = {element.title} description = {element.description} imgUrl = {element.urlToImage} newsUrl = {element.url} author = {element.author} time = {element.publishedAt} source = {element.source.name} />
+                                    <div key={index} className="col">
+                                        <NewsItem title={element.title} description={element.description} imgUrl={element.urlToImage} newsUrl={element.url} author={element.author} time={element.publishedAt} source={element.source.name} />
                                     </div>
                                 )
                             })}
